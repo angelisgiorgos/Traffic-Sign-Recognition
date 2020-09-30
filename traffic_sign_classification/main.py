@@ -21,6 +21,7 @@ import tensorflow.keras.backend as K
 from lenet import LeNet
 from custom_model import custom_model
 from micronet import MicronNet
+from classes import classes
 tf.test.is_gpu_available()
 tf.test.gpu_device_name()
 
@@ -86,20 +87,19 @@ def visualizations(x_train, y_train):
         Raises an Error if Matplotlib haven't imported previously, successfully.
 
     """
-
-    W = 10
-    L = 10
-    fig, axes = plt.subplots(L, W, figsize=(15, 15))
+    W= 7
+    L=10
+    fig, axes = plt.subplots(L,W, figsize = (15,15))
     axes = axes.ravel()
     num_training = len(x_train)
-    for i in np.arange(0, W * L):
-        index = np.random.randint(0, num_training)
+    for i in np.arange(0,W*L):
+        index=np.random.randint(0, num_training)
         axes[i].imshow(x_train[index])
-        axes[i].set_title(y_train[index], fontsize=11)
+        c = y_train[index]
+        axes[i].set_title(classes[c], fontsize=9)
         axes[i].axis("off")
-    plt.subplots_adjust(bottom=0.001, top=0.9, hspace=0.8)
-
-    fig = plt.figure(figsize=(12, 4))
+    plt.subplots_adjust(bottom= 0.001,top=0.9,hspace=0.8)
+    fig = plt.figure(figsize=(12,6))
 
 
 def samples_visuals(y_train, y_val, y_test):
@@ -126,19 +126,20 @@ def samples_visuals(y_train, y_val, y_test):
     plt.show()
 
 
-def evaluation_vis(History, string):
+def evaluation_vis(History, string, epochs):
     """Function generated in order to visualize the training/validation loss and accuracy diagrams.
 
     Args:
         History (TensorFlow class): First paramater. Contains model's training history. Includes four keys {loss, val_loss, accuracy, val_accuracy}
         string (str): Second paramater. Specific value, loss or accuracy. Specifies the metric's diagram.
+        epochs (int): Third parameter, number of training epochs.
     Returns: 
         plot: If successful, plots a metrics diagram, that includes training and validation loss or accuracy graphs. 
 
         Raises an Error if Matplotlib haven't imported previously, successfully and if the string variable is incorrect.
 
     """
-    N = np.arange(0, 40)
+    N = np.arange(0, epochs)
     plt.style.use("ggplot")
     plt.figure(figsize=(8, 8))
     plt.plot(N, History.history[string], label="train " + string)
@@ -147,6 +148,7 @@ def evaluation_vis(History, string):
     plt.xlabel("Epoch")
     plt.ylabel("Loss/Val" + string)
     plt.legend(loc="lower left")
+
 
 
 def conf_matrix(y_true, pr_class):
@@ -178,13 +180,13 @@ def img_rec(x_test, pr_class, y_true):
 
         Raises an Error if Matplotlib haven't imported previously.
     """
-
-    fig, axes = plt.subplots(5, 5, figsize=(18, 18))
+    fig,axes = plt.subplots(5,5,figsize=(13,13))
     axes = axes.ravel()
-    for i in np.arange(0, 25):
+    for i in np.arange(0,25):
         axes[i].imshow(x_test[i])
-        axes[i].set_title("Prediction = {}\n True={}".format(
-            pr_class[i], y_true[i]))
+        value_pr = pr_class[i]
+        value_true = y_true[i]
+        axes[i].set_title("Prediction = {}\n True={}".format(classes[value_pr], classes[value_true] ),fontsize=8)
         axes[i].axis("off")
 
 
@@ -199,9 +201,6 @@ def eval_metrics(x_test, y_true):
 
         Raises an Error if scikit learn classification report method haven't imported previously.
     """
-
-    yhat_probs = model.predict(x_test, verbose=0)
-    yhat_classes = model.predict_classes(x_test, verbose=0)
     accuracy = accuracy_score(y_true, yhat_classes)
     print('Accuracy: %f' % accuracy)
     print(classification_report(y_true, yhat_classes))
@@ -252,15 +251,17 @@ x_train_gray = (x_train_gray - 128) / 128
 x_val_gray = (x_val_gray - 128) / 128
 x_test_gray = (x_test_gray - 128) / 128
 
-visualizations(x_train, y_train)
+visualizations(x_train, y_train, classes)
 
 print("LeNet Training begins...")
+
+eps = 40
 
 model = LeNet(32, 32, 1)
 History = model.fit(x_train_gray,
                     y_train,
                     batch_size=500,
-                    epochs=40,
+                    epochs=eps,
                     verbose=1,
                     validation_data=(x_val_gray, y_val))
 
@@ -273,34 +274,32 @@ tf.keras.utils.plot_model(
     to_file="lenet.png",
 )
 
-evaluation_vis(History, 'loss')
-evaluation_vis(History, 'accuracy')
+evaluation_vis(History, 'loss', eps)
+evaluation_vis(History, 'accuracy', eps)
 
 pr_class = model.predict_classes(x_test_gray)
 
 conf_matrix(y_test, pr_class)
-img_rec(x_test, pr_class, y_test)
-eval_metrics(x_test_gray, y_test)
+img_rec(x_test, pr_class, y_test, classes)
+
+yhat_probs = model.predict(x_test_gray, verbose=0)
+yhat_classes = model.predict_classes(x_test_gray, verbose=0)
+eval_metrics(yhat_classes, y_test)
 '''
 Custom model training & evaluation
 _________________________________________________
 '''
 print('Custom model training begins...')
 
+eps= 80
 model2 = custom_model(32, 32, 3)
-aug = ImageDataGenerator(samplewise_center=True,
-                         rotation_range=30,
-                         zoom_range=0.35,
-                         width_shift_range=0.4,
-                         height_shift_range=0.4,
-                         brightness_range=[1.5, 2.0],
-                         shear_range=0.35,
-                         fill_mode="nearest")
 
-History2 = model2.fit_generator(aug.flow(x_train, y_train, batch_size=32),
-                                validation_data=(x_val, y_val),
-                                steps_per_epoch=len(x_train) // 32,
-                                epochs=100)
+History2 = model2.fit(x_train,
+                    y_train,
+                    batch_size=500,
+                    epochs=eps,
+                    verbose=1,
+                    validation_data=(x_val, y_val))
 
 score2 = model2.evaluate(x_test, y_test, verbose=0)
 print("Test Loss: {}".format(score[0]))
@@ -308,15 +307,19 @@ print("Test Accuracy: {}".format(score[1]))
 
 tf.keras.utils.plot_model(model2, to_file="model2.png")
 
-evaluation_vis(History2, 'loss')
-evaluation_vis(History2, 'accuracy')
+evaluation_vis(History2, 'loss', eps)
+evaluation_vis(History2, 'accuracy', eps)
 
 x_test2 = tf.cast(x_test, tf.float32)
 yhat_class2 = model2.predict_classes(x_test2, verbose=0)
 
 conf_matrix(y_test, yhat_class2)
-img_rec(x_test, yhat_class2, y_test)
-eval_metrics(x_test2, y_test)
+img_rec(x_test, yhat_class2, y_test, classes)
+
+yhat_probs = model2.predict(x_test, verbose=0)
+yhat_classes = model2.predict_classes(x_test, verbose=0)
+eval_metrics(yhat_classes, y_test)
+
 '''
 Custom model training & evaluation
 _________________________________________________
@@ -394,5 +397,7 @@ x_test3 = tf.cast(x_t2, tf.float32)
 yhat_class2 = model2.predict_classes(x_test3, verbose=0)
 
 conf_matrix(y_t2, yhat_class2)
-img_rec(x_test3, yhat_class2, y_t2)
-eval_metrics(x_test3, y_t2)
+img_rec(x_test3, yhat_class2, y_t2, classes)
+yhat_probs = model3.predict(x_test3, verbose=0)
+yhat_classes = model3.predict_classes(x_test3, verbose=0)
+eval_metrics(yhat_classes, y_t2)
