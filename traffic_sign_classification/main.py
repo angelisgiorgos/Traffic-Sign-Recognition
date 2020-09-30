@@ -28,35 +28,35 @@ tf.test.gpu_device_name()
 def resize_cv(im, size):
     """Function that resizes all dataset's images. Used on training-validation and test set.
 
-	Args:
-		im (src): The first parameter includes the image that we have previously imported.
-		size (int): Second paramater. The images new size. Suggested values: (32,48,64)
+    Args:
+        im (src): The first parameter includes the image that we have previously imported.
+        size (int): Second paramater. The images new size. Suggested values: (32,48,64)
 
-	Returns: 
-		Image: If successful returns the new resized image (src) with new dimensions (size x size x 3). 
+    Returns: 
+        Image: If successful returns the new resized image (src) with new dimensions (size x size x 3). 
 
-		Raises an Error if OpenCv haven't imported previously, if arguments are empty values
+        Raises an Error if OpenCv haven't imported previously, if arguments are empty values
 
-	"""
+    """
     return cv2.resize(im, (size, size), interpolation=cv2.INTER_LINEAR)
 
 
 def test_images(rootpath, size):
     """Function that reads all testing set's images. Firstly creates two empty lists. After reads, with Pandas read_csv function from rootpath's csv file all DataFrame's instances.
-	Iterating with pd.iterrows function through all dataframes rows. With the plt.image function reads images values. After that reads from dataframe the images roi's and then resizes the image
-	with the resize_cv function. Finally appends the img and classid to the two list that we initialized in the first step.
+    Iterating with pd.iterrows function through all dataframes rows. With the plt.image function reads images values. After that reads from dataframe the images roi's and then resizes the image
+    with the resize_cv function. Finally appends the img and classid to the two list that we initialized in the first step.
 
-	Args:
-		rootpath (src): The first parameter, includes the dataset's directory.
-		size (int): Second paramater. The images new size. Suggested values: (32,48,64).
+    Args:
+        rootpath (src): The first parameter, includes the dataset's directory.
+        size (int): Second paramater. The images new size. Suggested values: (32,48,64).
 
-	Returns: 
-		lists: If successful, returns the two lists, one with all the test set images and one with the test set classes id. 
+    Returns: 
+        lists: If successful, returns the two lists, one with all the test set images and one with the test set classes id. 
 
-		Raises an Error if OpenCv, Pandas, Matplotlib haven't imported previously.
+        Raises an Error if OpenCv, Pandas, Matplotlib haven't imported previously.
 
-		Raises an Error if the testing set directory isn't correct.
-	"""
+        Raises an Error if the testing set directory isn't correct.
+    """
     test_images = []
     test_labels = []
     in_dir = '/content/GTSRB/Final_Test/Images/'  #if you are working in a different directory must change also this.
@@ -76,16 +76,16 @@ def test_images(rootpath, size):
 def visualizations(x_train, y_train):
     """Function that creates a visualization of training dataset's images with their classes. Implemented with matplotlib. 
 
-	Args:
-		x_train (NumPy array): The first parameter, includes the training set images.
-		y_train (NumPy array): Second paramater. The images labels in numbers mode. Values between (0,42).
+    Args:
+        x_train (NumPy array): The first parameter, includes the training set images.
+        y_train (NumPy array): Second paramater. The images labels in numbers mode. Values between (0,42).
 
-	Returns: 
-		plot: If successful, plots a new image, that includes random images from the training set with their labels. 
+    Returns: 
+        plot: If successful, plots a new image, that includes random images from the training set with their labels. 
 
-		Raises an Error if Matplotlib haven't imported previously, successfully.
+        Raises an Error if Matplotlib haven't imported previously, successfully.
 
-	"""
+    """
 
     W = 10
     L = 10
@@ -105,17 +105,17 @@ def visualizations(x_train, y_train):
 def samples_visuals(y_train, y_val, y_test):
     """Function that creates a histogram of dataset's samples splitted based on their class. In the x axis appended the dataset's labes (values 0~42) In the y-axis appended the number each label's number of samples. 
 
-	Args:
-		y_train (NumPy array): First paramater. The training set images labels in numbers mode. Values between (0,42).
-		y_val (NumPy array): Second paramater. The validation set images labels in numbers mode. Values between (0,42).
-		y_train (NumPy array): Third paramater. The testing set images labels in numbers mode. Values between (0,42).
+    Args:
+        y_train (NumPy array): First paramater. The training set images labels in numbers mode. Values between (0,42).
+        y_val (NumPy array): Second paramater. The validation set images labels in numbers mode. Values between (0,42).
+        y_train (NumPy array): Third paramater. The testing set images labels in numbers mode. Values between (0,42).
 
-	Returns: 
-		plot: If successful, plots a new image, that includes a histgram with the training/validation/testing set samples splitted based on their class. 
+    Returns: 
+        plot: If successful, plots a new image, that includes a histgram with the training/validation/testing set samples splitted based on their class. 
 
-		Raises an Error if Matplotlib haven't imported previously, successfully.
+        Raises an Error if Matplotlib haven't imported previously, successfully.
 
-	"""
+    """
     n, bins, patches = plt.hist(y_train, 43)
     plt.figure(figsize=(12, 4))
     cls = ['Training', 'Validation', 'Test']
@@ -129,15 +129,15 @@ def samples_visuals(y_train, y_val, y_test):
 def evaluation_vis(History, string):
     """Function generated in order to visualize the training/validation loss and accuracy diagrams.
 
-	Args:
-		History (TensorFlow class): First paramater. Contains model's training history. Includes four keys {loss, val_loss, accuracy, val_accuracy}
-		string (str): Second paramater. Specific value, loss or accuracy. Specifies the metric's diagram.
-	Returns: 
-		plot: If successful, plots a metrics diagram, that includes training and validation loss or accuracy graphs. 
+    Args:
+        History (TensorFlow class): First paramater. Contains model's training history. Includes four keys {loss, val_loss, accuracy, val_accuracy}
+        string (str): Second paramater. Specific value, loss or accuracy. Specifies the metric's diagram.
+    Returns: 
+        plot: If successful, plots a metrics diagram, that includes training and validation loss or accuracy graphs. 
 
-		Raises an Error if Matplotlib haven't imported previously, successfully and if the string variable is incorrect.
+        Raises an Error if Matplotlib haven't imported previously, successfully and if the string variable is incorrect.
 
-	"""
+    """
     N = np.arange(0, 40)
     plt.style.use("ggplot")
     plt.figure(figsize=(8, 8))
@@ -152,15 +152,15 @@ def evaluation_vis(History, string):
 def conf_matrix(y_true, pr_class):
     """Generates confustion matrix to evaluate our model's performance.
 
-	Args:
-		y_true (NumPy array): First paramater. Contains The testing set images labels in numbers mode.
-		pr_class (NumPy array): Second paramater. Includes predicted class value which is the result of Keras evaluate function.
-	Returns: 
-		plot: If successful, plots a confusion matrix. 
+    Args:
+        y_true (NumPy array): First paramater. Contains The testing set images labels in numbers mode.
+        pr_class (NumPy array): Second paramater. Includes predicted class value which is the result of Keras evaluate function.
+    Returns: 
+        plot: If successful, plots a confusion matrix. 
 
-		Raises an Error if Matplotlib haven't imported previously.
+        Raises an Error if Matplotlib haven't imported previously.
 
-	"""
+    """
     cm = confusion_matrix(y_true, pr_class)
     plt.figure(figsize=(15, 15))
     sns.heatmap(cm, annot=True)
@@ -169,15 +169,15 @@ def conf_matrix(y_true, pr_class):
 def img_rec(x_test, pr_class, y_true):
     """Creates an image that includes testing set images with their correct and predicted class.
 
-	Args:
-		x_test (NumPy array): First paramater. Contains The training set images in converted in NumPy array.
-		pr_class (NumPy array): Second paramater. Includes predicted class value which is the result of Keras evaluate function.
-		y_true (NumPy array): Third parameter. Testing set classes values
-	Returns: 
-		plot: If successful, plots an image that includes random testing set images with their correct and predicted class. 
+    Args:
+        x_test (NumPy array): First paramater. Contains The training set images in converted in NumPy array.
+        pr_class (NumPy array): Second paramater. Includes predicted class value which is the result of Keras evaluate function.
+        y_true (NumPy array): Third parameter. Testing set classes values
+    Returns: 
+        plot: If successful, plots an image that includes random testing set images with their correct and predicted class. 
 
-		Raises an Error if Matplotlib haven't imported previously.
-	"""
+        Raises an Error if Matplotlib haven't imported previously.
+    """
 
     fig, axes = plt.subplots(5, 5, figsize=(18, 18))
     axes = axes.ravel()
@@ -191,14 +191,14 @@ def img_rec(x_test, pr_class, y_true):
 def eval_metrics(x_test, y_true):
     """Evaluates models performance using metrics, accuracy, precision, recall, f1_score.
 
-	Args:
-		x_test (NumPy array): First paramater. Contains The training set images in converted in NumPy array.
-		y_true (NumPy array): Second parameter. Testing set classes values
-	Returns: 
-		string: If successful, plots classification report for testing set in order to evaluate models perfomance. 
+    Args:
+        x_test (NumPy array): First paramater. Contains The training set images in converted in NumPy array.
+        y_true (NumPy array): Second parameter. Testing set classes values
+    Returns: 
+        string: If successful, plots classification report for testing set in order to evaluate models perfomance. 
 
-		Raises an Error if scikit learn classification report method haven't imported previously.
-	"""
+        Raises an Error if scikit learn classification report method haven't imported previously.
+    """
 
     yhat_probs = model.predict(x_test, verbose=0)
     yhat_classes = model.predict_classes(x_test, verbose=0)
@@ -297,9 +297,9 @@ aug = ImageDataGenerator(samplewise_center=True,
                          shear_range=0.35,
                          fill_mode="nearest")
 
-History2 = model2.fit_generator(aug.flow(x_train, y_train, batch_size=500),
+History2 = model2.fit_generator(aug.flow(x_train, y_train, batch_size=32),
                                 validation_data=(x_val, y_val),
-                                steps_per_epoch=len(x_train) // 500,
+                                steps_per_epoch=len(x_train) // 32,
                                 epochs=100)
 
 score2 = model2.evaluate(x_test, y_test, verbose=0)
@@ -363,12 +363,21 @@ visualizations(x_train2, y_train2)
 print('MicronNet training begins...')
 
 model3 = MicronNet(48, 48, 3)
-History3 = model3.fit(x_train2,
-                      y_train2,
-                      batch_size=500,
-                      epochs=50,
-                      verbose=1,
-                      validation_data=(x_val2, y_val2))
+
+aug = ImageDataGenerator(samplewise_center=True,
+                         rotation_range=30,
+                         zoom_range=0.35,
+                         width_shift_range=0.4,
+                         height_shift_range=0.4,
+                         brightness_range=[1.5, 2.0],
+                         shear_range=0.35,
+                         fill_mode="nearest")
+
+History3 = model3.fit_generator(aug.flow(x_train2, y_train2, batch_size=32),
+                                validation_data=(x_val2, y_val2),
+                                steps_per_epoch=len(x_train2) // 32,
+                                epochs=100)
+
 
 score2 = model3.evaluate(x_t2, y_t2, verbose=0)
 print("Test Loss: {}".format(score2[0]))
