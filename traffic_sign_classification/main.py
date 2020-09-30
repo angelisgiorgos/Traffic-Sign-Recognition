@@ -387,7 +387,7 @@ print("Test Loss: {}".format(score2[0]))
 print("Test Accuracy: {}".format(score2[1]))
 tf.keras.utils.plot_model(
     model3,
-    to_file="model3.png",
+    to_file="model3.png"
 )
 
 evaluation_vis(History3, 'loss')
