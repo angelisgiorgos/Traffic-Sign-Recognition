@@ -12,7 +12,7 @@ Usage steps:
   
 * To use it in Google Colab, open the .ipynb file and run all the cells.
 
-Used German Traffic Sign Recognition Benchmark. The whole dataset consists of 50.000 traffic sign images. Approximately the 39000 are used for training and validation
+Used German Traffic Sign Recognition Benchmark. The whole dataset consists of 50.000 traffic sign images. Approximately the 39.000 are used for training and validation
 and 12.000 for testing.
 > Dataset is provided here: http://benchmark.ini.rub.de/?section=gtsrb&subsection=news
 
