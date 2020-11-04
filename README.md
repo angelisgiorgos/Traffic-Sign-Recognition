@@ -4,7 +4,7 @@ Traffic Sign recognition using Convolutional Neural Networks.
 Usage steps:
 * To use it in your local machine:
   * Clone the repo
-  * Download the German Traffic Dataset.
+  * Download the German Traffic Signs Dataset.
   * Navigate to traffic_sign_classification folder.
   * Open main.py
   * Assign to in_dir, data_dir the correct directories.
