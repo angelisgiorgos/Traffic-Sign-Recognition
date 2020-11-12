@@ -1,12 +1,8 @@
 import matplotlib.pyplot as plt
-import os
-import csv
-import keras
+import os, random, cv2
 import numpy as np
 import tensorflow as tf
 import pandas as pd
-import random
-import cv2
 import seaborn as sns
 from tensorflow import keras
 from sklearn.utils import shuffle
@@ -22,6 +18,7 @@ from lenet import LeNet
 from custom_model import custom_model
 from micronet import MicronNet
 from classes import classes
+
 tf.test.is_gpu_available()
 tf.test.gpu_device_name()
 
