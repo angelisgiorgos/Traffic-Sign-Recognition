@@ -3,7 +3,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, BatchNormalization, Dropout, MaxPooling2D, Activation, Flatten, Dense, AveragePooling2D
 
 def MicronNet(width, height, depth):
-	"""Generates the MicronNet network. Consists 4 Convolutional layers and 3 Fully Connected.
+	"""Generates the MicronNet network. Consists of 4 Convolutional layers and 3 Fully Connected.
 
 	Args:
 		width (int): First paramater. The networks input's width.
