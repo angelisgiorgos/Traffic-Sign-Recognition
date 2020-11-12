@@ -3,7 +3,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, BatchNormalization, Dropout, MaxPooling2D, Activation, Flatten, Dense, AveragePooling2D
 
 def LeNet(width, height, depth):
-  """Generates the LeNet network. Consists 2 Convolutional layers and 3 Fully Connected.
+  """Generates the LeNet network. Consists of 2 Convolutional layers and 3 Fully Connected.
 
   Args:
     width (int): First paramater. The networks input's width.
