@@ -3,7 +3,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, BatchNormalization, Dropout, MaxPooling2D, Activation, Flatten, Dense, AveragePooling2D
 
 def custom_model(width, height, depth):
-  """Generates the custom model network. Consists 5 Convolutional layers and 3 Fully Connected.
+  """Generates the custom model network. Consists of 5 Convolutional layers and 3 Fully Connected.
 
   Args:
     width (int): First paramater. The networks input's width.
