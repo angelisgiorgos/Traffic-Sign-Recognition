@@ -9,10 +9,8 @@ from sklearn.utils import shuffle
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras import utils
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report, confusion_matrix
 from skimage import transform
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import classification_report
 import tensorflow.keras.backend as K
 from lenet import LeNet
 from custom_model import custom_model
